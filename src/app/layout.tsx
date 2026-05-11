@@ -36,8 +36,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${cormorant.variable} ${instrument.variable}`} data-scroll-behavior="smooth">
-      <body className="antialiased bg-background text-foreground overflow-x-hidden">
+    <html lang="en" className={`${dmSans.variable} ${cormorant.variable} ${instrument.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body className="antialiased bg-background text-foreground overflow-x-hidden" suppressHydrationWarning>
         <div className="page-curtain" />
         <CursorFollower />
         <Navbar />

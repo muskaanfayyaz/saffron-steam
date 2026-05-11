@@ -130,7 +130,7 @@ export function Hero() {
             transition={{ delay: 1.6, duration: 0.7 }}
             className="flex items-center gap-4"
           >
-            <a href="#menu">
+            <a href="/menu">
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
@@ -140,7 +140,7 @@ export function Hero() {
                 Explore Menu
               </motion.button>
             </a>
-            <a href="#reserve">
+            <a href="/reserve">
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
