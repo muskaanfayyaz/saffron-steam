@@ -65,7 +65,7 @@ const MENU_ITEMS: MenuItem[] = [
     badge: "Single Origin",
     tags: ["Hot", "Black", "Complex"],
     desc: "A single-origin cup brewed to order using a Hario V60. The origin rotates weekly — ask us where it's from.",
-    img: "/pour.png",
+    img: "/Pour-Over.png",
     accent: "#A08060",
   },
   {
@@ -364,9 +364,9 @@ function FlipCard({ item, index }: { item: MenuItem; index: number }) {
                 style={{ background: "#1C1917" }}
               >
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                  <path d="M1 1h2l1.4 7h6.2l1.4-5H4" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="6.5" cy="12" r="0.8" fill="white"/>
-                  <circle cx="10.5" cy="12" r="0.8" fill="white"/>
+                  <path d="M1 1h2l1.4 7h6.2l1.4-5H4" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="6.5" cy="12" r="0.8" fill="white" />
+                  <circle cx="10.5" cy="12" r="0.8" fill="white" />
                 </svg>
                 Order
               </button>
@@ -400,12 +400,11 @@ function FilterBar({
   }, []);
 
   return (
-    <div 
-      className={`sticky top-[70px] z-40 transition-all duration-300 py-4 ${
-        isSticky 
-          ? "bg-[#FAFAF7] shadow-[0_10px_30px_rgba(0,0,0,0.04)] border-b border-[#E7E2D9]" 
+    <div
+      className={`sticky top-[70px] z-40 transition-all duration-300 py-4 ${isSticky
+          ? "bg-[#FAFAF7] shadow-[0_10px_30px_rgba(0,0,0,0.04)] border-b border-[#E7E2D9]"
           : "bg-transparent border-y border-[#E7E2D9]/30"
-      }`}
+        }`}
     >
       <div
         className="max-w-7xl mx-auto px-6 md:px-16 flex items-center justify-center gap-10 overflow-x-auto"
