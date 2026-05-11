@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -388,17 +388,34 @@ function FilterBar({
   active: string;
   onChange: (cat: string) => void;
 }) {
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Offset should be around the hero height + main pt
+      setIsSticky(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="sticky top-[72px] z-40 bg-[#FAFAF7]/90 backdrop-blur-md border-y border-[#E7E2D9] py-4 mb-20">
+    <div 
+      className={`sticky top-[70px] z-40 transition-all duration-300 py-4 ${
+        isSticky 
+          ? "bg-[#FAFAF7] shadow-[0_10px_30px_rgba(0,0,0,0.04)] border-b border-[#E7E2D9]" 
+          : "bg-transparent border-y border-[#E7E2D9]/30"
+      }`}
+    >
       <div
-        className="max-w-7xl mx-auto px-6 md:px-16 flex items-center gap-8 overflow-x-auto"
+        className="max-w-7xl mx-auto px-6 md:px-16 flex items-center justify-center gap-10 overflow-x-auto"
         style={{ scrollbarWidth: "none" }}
       >
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
             onClick={() => onChange(cat)}
-            className="relative font-sans text-xs uppercase tracking-widest shrink-0 transition-colors"
+            className="relative font-sans text-[11px] uppercase tracking-[0.25em] shrink-0 transition-all duration-300 py-2"
             style={{
               color: active === cat ? "#B45309" : "#78716C",
               fontWeight: active === cat ? 600 : 400,
@@ -407,8 +424,9 @@ function FilterBar({
             {cat}
             {active === cat && (
               <motion.div
-                layoutId="menu-filter"
-                className="absolute -bottom-5 left-0 right-0 h-0.5 bg-[#B45309]"
+                layoutId="menu-filter-indicator"
+                className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#B45309]"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
               />
             )}
           </button>
@@ -428,17 +446,17 @@ export default function MenuPage() {
     filter === "All" ? MENU_ITEMS : MENU_ITEMS.filter((i) => i.category === filter);
 
   return (
-    <main className="w-full bg-[#FAFAF7] text-[#1C1917] min-h-screen pt-32 overflow-hidden">
+    <main className="w-full bg-[#FAFAF7] text-[#1C1917] min-h-screen pt-32">
       {/* Hero */}
-      <section className="relative px-6 md:px-16 max-w-4xl mx-auto text-center mb-16">
-        <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#B45309] mb-4">
+      <section className="relative px-6 md:px-16 max-w-4xl mx-auto text-center mb-24">
+        <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#B45309] mb-5">
           Artisanal Coffee & Kitchen
         </p>
         <motion.h1
           initial={{ opacity: 0, filter: "blur(12px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
           transition={{ duration: 0.8 }}
-          className="font-display font-light text-6xl md:text-8xl mb-6"
+          className="font-display font-light text-7xl md:text-9xl mb-8 tracking-tighter"
         >
           The Menu
         </motion.h1>
@@ -446,7 +464,7 @@ export default function MenuPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="font-sans text-sm md:text-base text-[#78716C] max-w-sm mx-auto"
+          className="font-sans text-xs md:text-sm text-[#78716C] max-w-xs mx-auto uppercase tracking-widest leading-loose opacity-60"
         >
           Every item has a reason to exist.
           <br />
@@ -458,7 +476,7 @@ export default function MenuPage() {
       <FilterBar active={filter} onChange={setFilter} />
 
       {/* Grid */}
-      <div className="max-w-7xl mx-auto px-6 md:px-16 pb-32">
+      <div className="max-w-7xl mx-auto px-6 md:px-16 pt-20 pb-32">
         <AnimatePresence mode="wait">
           <motion.div
             key={filter}
@@ -466,7 +484,7 @@ export default function MenuPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             {filtered.map((item, idx) => (
               <FlipCard key={item.name} item={item} index={idx} />
