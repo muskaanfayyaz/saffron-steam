@@ -170,6 +170,7 @@ export default function Home() {
                         fill
                         className="object-cover transition-transform duration-[2s] group-hover:scale-110 group-hover:rotate-1"
                         sizes="(max-width: 768px) 100vw, 25vw"
+                        priority={i < 2}
                       />
                       {/* Dark Vignette */}
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-80" />

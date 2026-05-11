@@ -8,9 +8,9 @@ import Image from "next/image";
 
 // Reusable Gallery Cell component for the clip-path animations
 function GalleryCell({ 
-  name, label, hoverText, img, className = "", delay = 0 
+  name, label, hoverText, img, className = "", delay = 0, priority = false
 }: { 
-  name: string; label: string; hoverText: string; img: string; className?: string; delay?: number 
+  name: string; label: string; hoverText: string; img: string; className?: string; delay?: number; priority?: boolean
 }) {
   return (
     <motion.div
@@ -28,6 +28,7 @@ function GalleryCell({
           fill 
           className="object-cover" 
           sizes="(max-width: 768px) 100vw, 50vw" 
+          priority={priority}
         />
       </div>
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-500" />
@@ -84,24 +85,28 @@ export default function GalleryPage() {
             name="The Morning Light" label="7:30AM · Zamzama Boulevard" 
             hoverText="The hour before it gets busy. The best light in the building."
             img="/image.png" 
+            priority={true}
           />
           <GalleryCell 
             className="md:col-span-1" delay={0.2}
             name="The Corner Table" label="Table 4 · The Quiet One" 
             hoverText="Three novels have been finished here. We're keeping count."
             img="/image copy.png" 
+            priority={true}
           />
           <GalleryCell 
             className="md:col-span-1" delay={0.3}
             name="The Bar" label="The Espresso Bar" 
             hoverText="Where every cup begins."
             img="/image copy 2.png" 
+            priority={true}
           />
           <GalleryCell 
             className="md:col-span-1" delay={0.4}
             name="The Window Seat" label="Window Seat · First Come" 
             hoverText="Arrives early, leaves late. The most coveted seat in the house."
             img="/image copy 3.png" 
+            priority={true}
           />
           <GalleryCell 
             className="md:col-span-1" delay={0.5}

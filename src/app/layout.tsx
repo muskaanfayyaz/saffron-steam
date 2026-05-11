@@ -36,7 +36,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${cormorant.variable} ${instrument.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${cormorant.variable} ${instrument.variable}`} data-scroll-behavior="smooth">
       <body className="antialiased bg-background text-foreground overflow-x-hidden">
         <div className="page-curtain" />
         <CursorFollower />

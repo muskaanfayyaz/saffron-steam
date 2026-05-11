@@ -232,6 +232,8 @@ function FlipCard({ item, index }: { item: MenuItem; index: number }) {
               alt={item.name}
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              priority={index < 4}
             />
             {/* Dark vignette overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0D0905]/95 via-[#0D0905]/30 to-transparent" />
