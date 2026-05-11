@@ -1,11 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const LINKS = {
-  Visit: ["Menu", "Gallery", "Reservations", "Locations"],
-  Discover: ["Our Story", "Brewing Method", "Bean Origins", "Press"],
-  Connect: ["Instagram", "Facebook", "WhatsApp", "Newsletter"],
+  Visit: [
+    { label: "Menu", href: "/menu" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Reservations", href: "/reserve" },
+  ],
+  Discover: [
+    { label: "Our Story", href: "/story" },
+  ],
 };
 
 const SOCIALS = [
@@ -155,16 +161,16 @@ export function Footer() {
                 </p>
                 <ul className="space-y-4">
                   {links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
                         className="font-sans text-sm transition-colors duration-200"
                         style={{ color: "rgba(255,255,255,0.65)" }}
                         onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.color = "#D97706")}
                         onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.color = "rgba(255,255,255,0.65)")}
                       >
-                        {link}
-                      </a>
+                        {link.label}
+                      </Link>
                     </li>
                   ))}
                 </ul>
