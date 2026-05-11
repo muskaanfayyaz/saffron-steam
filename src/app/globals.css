@@ -1,26 +1,329 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-accent: var(--font-accent);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Brand Palette */
+  --bg: #FAFAF7;
+  --surface: #F2EFE8;
+  --text: #1C1917;
+  --accent: #B45309;
+  --gold: #D97706;
+  --muted: #78716C;
+  --border: #E7E2D9;
+
+  /* Shadcn mapping */
+  --background: #FAFAF7;
+  --foreground: #1C1917;
+  --card: #F2EFE8;
+  --card-foreground: #1C1917;
+  --popover: #F2EFE8;
+  --popover-foreground: #1C1917;
+  --primary: #B45309;
+  --primary-foreground: #FAFAF7;
+  --secondary: #E7E2D9;
+  --secondary-foreground: #1C1917;
+  --muted: #E7E2D9;
+  --muted-foreground: #78716C;
+  --accent: #B45309;
+  --accent-foreground: #FAFAF7;
+  --destructive: #dc2626;
+  --border: #E7E2D9;
+  --input: #E7E2D9;
+  --ring: #B45309;
+  --radius: 0.5rem;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  *, *::before, *::after {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    line-height: 1.6;
+    cursor: none;
+  }
+  ::selection {
+    background: #B4530930;
+    color: #1C1917;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s, background 0.25s, opacity 0.25s;
+  will-change: transform;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
+  border: 1px solid #B4530960;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s cubic-bezier(.25,.46,.45,.94),
+              height 0.35s cubic-bezier(.25,.46,.45,.94),
+              border-color 0.3s,
+              opacity 0.3s;
+  will-change: transform;
+}
+body:has(a:hover) .cursor-dot,
+body:has(button:hover) .cursor-dot {
+  width: 16px; height: 16px;
+  background: var(--gold);
+}
+body:has(a:hover) .cursor-ring,
+body:has(button:hover) .cursor-ring {
+  width: 56px; height: 56px;
+  border-color: #D9770650;
+}
+
+/* ============================================================
+   NOISE GRAIN OVERLAY
+   ============================================================ */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  z-index: 1;
+}
+
+/* ============================================================
+   TYPOGRAPHY HELPERS
+   ============================================================ */
+.font-display { font-family: var(--font-heading), "Times New Roman", serif; }
+.font-accent-italic { font-family: var(--font-accent), Georgia, serif; font-style: italic; }
+
+/* ============================================================
+   SHIMMER BUTTON
+   ============================================================ */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.btn-shimmer {
+  background: linear-gradient(90deg, #B45309, #D97706, #B45309);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  border-radius: 99px;
+  padding: 14px 36px;
+  color: #FAFAF7;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  cursor: none;
+  transition: opacity 0.2s, transform 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-shimmer:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.btn-ghost {
+  background: transparent;
+  border-radius: 99px;
+  padding: 13px 36px;
+  color: #1C1917;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid #1C191740;
+  cursor: none;
+  transition: border-color 0.25s, color 0.25s, transform 0.25s, background 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-ghost:hover {
+  border-color: #B45309;
+  color: #B45309;
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   SECTION UTILITIES
+   ============================================================ */
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+}
+.divider-line {
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+/* ============================================================
+   CARD HOVER
+   ============================================================ */
+.card-hover {
+  transition: transform 0.35s cubic-bezier(.25,.46,.45,.94),
+              box-shadow 0.35s cubic-bezier(.25,.46,.45,.94);
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px #1C191712;
+}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ============================================================
+   FLIP CARD
+   ============================================================ */
+.flip-card { perspective: 1000px; cursor: none; }
+.flip-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(.45,.05,.55,.95);
+}
+.flip-card:hover .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.flip-back { transform: rotateY(180deg); }
+
+/* ============================================================
+   CLIP-PATH REVEAL
+   ============================================================ */
+.clip-reveal {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.85s cubic-bezier(.77,0,.175,1);
+}
+.clip-reveal.visible { clip-path: inset(0 0 0 0); }
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline-line::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 12px; bottom: -24px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+/* ============================================================
+   GLASSMORPHISM
+   ============================================================ */
+.glass {
+  background: rgba(242, 239, 232, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(180, 83, 9, 0.15);
+}
+
+/* ============================================================
+   ANIMATE FILL
+   ============================================================ */
+@keyframes fill-star {
+  from { color: #E7E2D9; }
+  to { color: #D97706; }
+}
+.star-fill { animation: fill-star 0.3s ease forwards; }
+
+/* ============================================================
+   PAGE LOAD TRANSITION
+   ============================================================ */
+@keyframes curtain-up {
+  0% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  background: #1C1917;
+  z-index: 99999;
+  animation: curtain-up 0.9s cubic-bezier(.77,0,.175,1) 0.2s forwards;
+  pointer-events: none;
 }
